@@ -73,12 +73,15 @@ for i in range(2000):
     ga.step()
     b_individual = ga.best_individual()
     statistics = ga.population.calc_statistics()
+
     print(f'ga.score = {b_individual.score}')
     logger.info(f'ga_score-{i}: {b_individual.score}')
-    print(f'ga_statistics-{i}: {statistics}')
-    logger.info(f'ga_statistics-{i}: {statistics}')
+
     print(f'ga_best_individual-{i}: {b_individual}')
     logger.info(f'ga_best_individual-{i}: {b_individual}')
+
+    logger.info(f'ga_statistics-{i}: {statistics}')   # зачем эта статистика нужна?
+
     step_per_score[i] = b_individual.score
     if b_individual == 1:
         print('молекула синтезирована!!!!!!!!!!!!!!!!!!!!!!!!')
