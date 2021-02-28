@@ -69,7 +69,7 @@ ga.set_fitness(fit_func)
 ga.initialize(space=env.action_space, steps=25)  #длина хромосомы
 # ga.run(n_iter=500, verbose=True)
 
-for i in range(2000):
+for i in range(1000):
     ga.step()
     b_individual = ga.best_individual()
     statistics = ga.population.calc_statistics()
