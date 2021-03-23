@@ -122,7 +122,7 @@ for i in range(start, 100000):
     with open(f'last_population/ga_last_population_{filename}.pickle', 'wb') as f:
         dump(last_pop, f)
 
-    if b_individual.score >= 10:
+    if score >= 10:
         print('молекула синтезирована!!!!!!!!!!!!!!!!!!!!!!!!')
         logger.info('молекула синтезирована!!!!!!!!!!!!!!!!!!!!!!!!')
         break
