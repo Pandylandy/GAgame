@@ -11,3 +11,4 @@ git+https://github.com/pandylandy/RNNSynthesis.git@master#egg=RNNSynthesis
 git+https://github.com/stsouko/LazyPony@master#egg=LazyPony
 git+https://github.com/pandylandy/CGRdbData.git@master#egg=CGRdbData
 matplotlib
+pandas
