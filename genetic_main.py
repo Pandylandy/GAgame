@@ -27,7 +27,7 @@ last_pop_flag = True if len(sys.argv) == 4 else False
 #
 
 # create the logging file handler
-fh = logging.FileHandler(f"logs/GA_{filename}.log", mode='w')
+fh = logging.FileHandler(f"tanimoto/logs/GA_{filename}.log", mode='w')
 
 formatter = logging.Formatter()
 fh.setFormatter(formatter)
@@ -46,16 +46,15 @@ def fit_func(hromosoma):
     env.reset()
     last_reward = 0
     for action in hromosoma:
-        state, reward, done, info = env.step(
-            action)  # reward не есть танимото. Танимото используется для вычесления reward.
+        state, reward, done, info = env.step(action)  # reward не есть танимото. Танимото используется для вычесления reward.
         if state:
             if len(state) - len(target) >= 20:
                 break
             last_reward = reward
             if done:
                 if env.depth < 5 and not env.stop:
-                    logger.info(f'синтетический путь для молекулы {target} = {[step for step in env.render()]}')
-                    print(f'синтетический путь для молекулы {target} = {[step for step in env.render()]}')
+                    logger.info(f'синтетический путь для молекулы {target} : {[step for step in env.render()]}')
+                    print(f'синтетический путь для молекулы {target} : {[str(step) for step in env.render()]}')
                     break
                 else:
                     logger.info('done, но молекула не синтезирована')
@@ -74,22 +73,22 @@ ga.initialize(space=env.action_space, steps=hromosoma_len)  # длина хро�
 
 # если хочу продолжить с последней популяции. НЕ ПЕРЕПУТАТЬ ДЛЯ РАЗНЫХ ТАРГЕТОВ # todo: сделать получение флага из консоли
 if last_pop_flag:
-    with open(f'last_population/ga_last_population_{filename}.pickle', 'rb') as f:
+    with open(f'tanimoto/last_population/ga_last_population_{filename}.pickle', 'rb') as f:
         last_pop = load(f)
 
     ga.population = last_pop
     ga.step()
 #
 # инкрементальное сохранения в пикл словаря "номер шага: ga.score", в не зависимости от того прерывается код или нет
-if not os.path.isdir(f'score_per_step/{filename}'):
-    os.mkdir(f'score_per_step/{filename}')
-files = os.listdir(f'score_per_step/{filename}')
+if not os.path.isdir(f'tanimoto/score_per_step/{filename}'):
+    os.mkdir(f'tanimoto/score_per_step/{filename}')
+files = os.listdir(f'tanimoto/score_per_step/{filename}')
 if not files:
     count = 1
     start = 0
 else:
     count = int(files[-1].split('.')[0])
-    with open(f'score_per_step/{filename}/{count}.pickle', 'rb') as f:
+    with open(f'tanimoto/score_per_step/{filename}/{count}.pickle', 'rb') as f:
         dt = load(f)
     start = list(dt)[-1]
     count += 1
@@ -105,7 +104,7 @@ for i in range(start, 100000):
     statistics = ga.population.calc_statistics()
     step_per_score[i] = b_individual.score
 
-    with open(f'score_per_step/{filename}/{count}.pickle', 'wb') as f:
+    with open(f'tanimoto/score_per_step/{filename}/{count}.pickle', 'wb') as f:
         dump(step_per_score, f)
 
     print(f'ga.score = {score}')
@@ -119,7 +118,7 @@ for i in range(start, 100000):
 
     last_pop = ga.population
 
-    with open(f'last_population/ga_last_population_{filename}.pickle', 'wb') as f:
+    with open(f'tanimoto/last_population/ga_last_population_{filename}.pickle', 'wb') as f:
         dump(last_pop, f)
 
     if score >= 10:
